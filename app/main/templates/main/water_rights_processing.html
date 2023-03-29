@@ -1,0 +1,88 @@
+{% extends 'main/base.html' %}
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block content %}
+<!--<head>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>-->
+<!--</head>-->
+<h3>Water Rights Processing</h3>
+<p>File: {{ filename }}</p>
+<p>Job Name: {{ job_name }}</p>
+<p>GeoJSON:</p>
+<p>{{ geojson }}</p>
+<h3>Task Status:</h3>
+<div id="status_area"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    var status = ""
+
+    function process_status(data) {
+        status = data.status
+        var progress = data.attributes.progress
+        var today = new Date()
+        var timestamp = today.toLocaleString()
+        message = "time: " + timestamp + " status: " + status + " progress: " + progress
+        console.log(message)
+        var status_p = document.createElement("p")
+        var status_node = document.createTextNode(message)
+        status_p.appendChild(status_node)
+        status_area = document.getElementById("status_area")
+        status_area.innerHTML = ""
+        status_area.appendChild(status_p)
+
+        if (status === "success") {
+            var output = data.attributes.output
+            var output_p = document.createElement("p")
+            var output_node = document.createTextNode(output)
+            output_p.appendChild(output_node)
+            status_area.appendChild(output_p)
+        }
+    }
+
+    function fetch_status() {
+        if (status === "success") {
+            return;
+        }
+
+        var csrf_token = "{{ csrf_token }}"
+        console.log("CSRF token: " + csrf_token)
+
+        var headers = {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+            "X-CSRFToken": csrf_token
+        }
+
+        console.log("headers: ")
+        console.log(headers)
+
+        var task_ID = "{{ task_ID }}"
+        console.log("task ID: " + task_ID)
+
+        var body = {
+            "task_ID": task_ID
+        }
+
+        console.log("request body:")
+        console.log(body)
+        console.log("fetching /water_rights_status/")
+
+        fetch("/water_rights_status/", {"method": "POST", "headers": headers, "body": JSON.stringify(body)})
+            .then(response => response.json())
+            .then(data => process_status(data))
+    }
+
+    $(window).load(function() {
+        fetch_status();
+    });
+
+    $(function(){
+        window.setInterval(function(){
+            fetch_status();
+        }, 10000)
+    })
+</script>
+{% endblock %}
