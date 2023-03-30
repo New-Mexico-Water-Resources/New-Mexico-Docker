@@ -1,11 +1,11 @@
-# Ready-To-Deploy Django, gunicorn, NGINX, Docker Application
-Getting a Django 3.1 app up in no time. In this project, gunicorn is used as a WSGI. NGINX is used as a reverse proxy server.
+# New Mexico Water Resources Toolkit
 
-## Premise
-I have seen one too many Dockerfile with unreadable code. Many code base out there have Docker setup so elaborately that it is unmodifiable. Here, I try to simplify Dockerfile and Docker Compose file as much as possible, so that more than one developer in a team will understand how it works.
+This Docker project runs the Water Rights Visualizer and ET Toolbox on AWS.
 
-## Getting Started
-Here is a script to install docker and docker-compose. After running these commands, exit from ssh and reconnect to the instance. This can be used in AWS Launch Config
+## Docker
+
+Install `docker-compose` on an Amazon Linux EC2 instance on AWS.
+
 ```
 #!/bin/bash
 sudo yum -y update
@@ -15,28 +15,25 @@ sudo service docker start
 sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
-For Ubuntu
+
+## Repository
+
+Clone the repository on the EC2 instance.
 ```
-sudo apt update
-sudo apt install -y docker.io
-sudo usermod -a -G docker $(whoami)
-sudo service docker start
-sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+git clone git@github.com:New-Mexico-Water-Resources/New-Mexico-Docker.git
 ```
 
-In the root level of this repository, copy the file named `django.env.example` to `django.env` and adjust file variables
+## Keys
 
-```
-cp django.env.example django.env
-```
+Copy `django.env` to the `New-Mexico-Docker` directory.
 
-Build code with docker compose
-```
-docker-compose build
-```
+Copy `google_drive_key.txt` to the `New-Mexico-Docker/app` directory.
 
-Run the built container
+Copy `client_secrets.json` to the `New-Mexico-Docker/app` directory.
+
+## Run
+
+Run with `docker-compose`
 ```
 docker-compose up -d
 ```

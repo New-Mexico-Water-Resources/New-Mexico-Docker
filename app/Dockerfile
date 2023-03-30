@@ -39,6 +39,11 @@ RUN mamba install -y -c conda-forge django geojson geopandas gunicorn h5py pytz 
 RUN pip install area django-crispy-forms
 RUN pip install django-pymemcache
 
+# install water rights dependencies
+# install dependencies
+RUN mamba install -y geojson geopandas h5py pydrive2 rasterio seaborn termcolor tk
+RUN pip install area pydrive2
+
 FROM environment as backend
 
 # install water rights visualizer
