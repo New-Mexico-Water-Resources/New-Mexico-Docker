@@ -13,7 +13,7 @@ from .forms import DocumentForm
 from .models import Document
 from .models import ToDoList
 from .tasks import start_task, get_task
-from .water_rights_task import run_water_rights_task
+from .water_rights_task import run_water_rights_task_dummy
 
 logger = getLogger(__name__)
 
@@ -104,7 +104,7 @@ def water_rights_processing(request):
             target_geometry = request.FILES["docfile"].read().decode()
             working_directory = join("/water_rights_tasks", task_ID)
             print(f"creating job directory: {working_directory}")
-            makedirs(working_directory)
+            makedirs(working_directory, exist_ok=True)
 
             target_geometry_filename = join(working_directory, filename)
             print(f"writing job GeoJSON: {target_geometry_filename}")
@@ -115,7 +115,8 @@ def water_rights_processing(request):
             # FIXME start water rights run here and let it run in the background
             task = start_task(
                 task_ID,
-                run_water_rights_task,
+                {"progress": "0%"},
+                run_water_rights_task_dummy,
                 [task_ID, target_geometry_filename, working_directory]
             )
 

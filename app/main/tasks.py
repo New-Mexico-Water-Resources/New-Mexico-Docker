@@ -39,9 +39,9 @@ class Task:
 #     def __init__(self):
 #         self.tasks = {}
 
-def start_task(task_ID: str, method, args) -> Dict:
+def start_task(task_ID: str, attributes: Dict, method, args) -> Dict:
     print(f"creating task ID: {task_ID}")
-    task = {"task_ID": task_ID, "status": "started", "attributes": {}}
+    task = {"task_ID": task_ID, "status": "started", "attributes": attributes}
     thread = threading.Thread(target=method, args=[*args, task])
     thread.setDaemon(True)
     thread.start()
