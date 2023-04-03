@@ -13,7 +13,7 @@ from .forms import DocumentForm
 from .models import Document
 from .models import ToDoList
 from .tasks import start_task, get_task
-from .water_rights_task import run_water_rights_task_dummy
+from .water_rights_task import run_water_rights_task_dummy, run_water_rights_task
 
 logger = getLogger(__name__)
 
@@ -43,7 +43,7 @@ def index(request, id):
             if newItem != "":
                 ls.item_set.create(text=newItem, complete=False)
             else:
-                print("invalid")
+                logger.info("invalid")
 
     return render(request, "main/index.html", {"ls": ls})
 
@@ -75,8 +75,8 @@ def view(request):
 
 
 def water_rights_upload(request):
-    print("view: water_rights_upload")
-    # print(f"Great! You're using Python 3.6+. If you fail here, use the right version.")
+    logger.info("view: water_rights_upload")
+    # logger.info(f"Great! You're using Python 3.6+. If you fail here, use the right version.")
     message = 'select GeoJSON file containing water right boundary'
 
     form = DocumentForm()  # An empty, unbound form
@@ -86,13 +86,13 @@ def water_rights_upload(request):
 
     # Render list page with the documents and the form
     context = {'documents': documents, 'form': form, 'message': message, "header": "Upload Water Rights Boundary"}
-    print("rendering water rights upload page")
+    logger.info("rendering water rights upload page")
     return render(request, 'main/water_rights_upload.html', context)
 
 
 def water_rights_processing(request):
-    print("view: water_rights_processing")
-    # print("water_rights_processing view")
+    logger.info("view: water_rights_processing")
+    # logger.info("water_rights_processing view")
     # context = {"header": "Water Rights Processing"}
     # return render(request, "main/water_rights_processing.html", context)
     if request.method == 'POST':
@@ -103,11 +103,11 @@ def water_rights_processing(request):
             # geojson = json.dumps(json.loads(request.FILES["docfile"].read().decode()), indent=2)
             target_geometry = request.FILES["docfile"].read().decode()
             working_directory = join("/water_rights_tasks", task_ID)
-            print(f"creating job directory: {working_directory}")
+            logger.info(f"creating job directory: {working_directory}")
             makedirs(working_directory, exist_ok=True)
 
             target_geometry_filename = join(working_directory, filename)
-            print(f"writing job GeoJSON: {target_geometry_filename}")
+            logger.info(f"writing job GeoJSON: {target_geometry_filename}")
 
             with open(target_geometry_filename, "w") as file:
                 file.write(target_geometry)
@@ -116,7 +116,7 @@ def water_rights_processing(request):
             task = start_task(
                 task_ID,
                 {"progress": "0%"},
-                run_water_rights_task_dummy,
+                run_water_rights_task,
                 [task_ID, target_geometry_filename, working_directory]
             )
 
@@ -137,7 +137,7 @@ def water_rights_processing(request):
                 "error": False
             }
 
-            print("rendering water rights processing page")
+            logger.info("rendering water rights processing page")
             return render(request, 'main/water_rights_processing.html', context)
         # else:
         #     message = 'The form is not valid. Fix the following error:'
@@ -158,22 +158,22 @@ def water_rights_processing(request):
         "error": True
     }
 
-    print("rendering water rights processing page")
+    logger.info("rendering water rights processing page")
     return render(request, 'main/water_rights_processing.html', context)
 
 
 def water_rights_status(request):
-    print("water_rights_status view")
+    logger.info("water_rights_status view")
     body = json.loads(request.body.decode())
     task_ID = body["task_ID"]
-    print(f"task ID: {task_ID}")
+    logger.info(f"task ID: {task_ID}")
     job_directory = join("/water_rights_tasks", task_ID)
-    print(f"job directory: {job_directory}")
+    logger.info(f"job directory: {job_directory}")
     task = get_task(task_ID)
     status = task["status"]
-    print(f"status: {status}")
+    logger.info(f"status: {status}")
     attributes = task["attributes"]
-    print(f"attributes: {attributes}")
+    logger.info(f"attributes: {attributes}")
 
     response = json.dumps({
         "status": status,

@@ -40,18 +40,18 @@ class Task:
 #         self.tasks = {}
 
 def start_task(task_ID: str, attributes: Dict, method, args) -> Dict:
-    print(f"creating task ID: {task_ID}")
+    logger.info(f"creating task ID: {task_ID}")
     task = {"task_ID": task_ID, "status": "started", "attributes": attributes}
     thread = threading.Thread(target=method, args=[*args, task])
     thread.setDaemon(True)
     thread.start()
     cache.set(task_ID, task, 3600)
-    print(f"task ID {task_ID} added")
+    logger.info(f"task ID {task_ID} added")
 
     return task
 
 def update_task(task_ID: str, task: Dict):
-    print(f"updating task {task_ID}: {task}")
+    logger.info(f"updating task {task_ID}: {task}")
     cache.set(task_ID, task, 3600)
 
 def get_task(task_ID: str) -> Dict:

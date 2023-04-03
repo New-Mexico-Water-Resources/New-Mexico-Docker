@@ -138,9 +138,8 @@ LOGGING = {
         },
     },
     'loggers': {
-        'app_api': {
+        '': {
             'handlers': ['console'],
-            'level': 'INFO',
         },
     },
     }

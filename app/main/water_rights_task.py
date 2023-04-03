@@ -22,20 +22,22 @@ def run_water_rights_task(task_ID: str, target_geometry_filename: str, working_d
 
     google_drive_temporary_directory = join(working_directory, "google_drive")
 
-    water_rights_visualizer(
-        boundary_filename=target_geometry_filename,
-        output_directory=working_directory,
-        google_drive_temporary_directory=google_drive_temporary_directory,
-        google_drive_key_filename = GOOGLE_DRIVE_KEY_FILENAME,
-        google_drive_client_secrets_filename = CLIENT_SECRETS_FILENAME
-    )
+    try:
+        water_rights_visualizer(
+            boundary_filename=target_geometry_filename,
+            output_directory=working_directory,
+            google_drive_temporary_directory=google_drive_temporary_directory,
+            google_drive_key_filename = GOOGLE_DRIVE_KEY_FILENAME,
+            google_drive_client_secrets_filename = CLIENT_SECRETS_FILENAME
+        )
+    except Exception as e:
+        task["status"] = "failed"
+        task["attributes"]["error"] = str(e)
+        update_task(task_ID, task)
+        logger.exception(e)
+        return
 
-    # # FIXME insert water rights tool call here
-    # for i in range(20):
-    #     time.sleep(1)
-    #     task["status"] = "running"
-    #     task["attributes"]["progress"] = f"{5 * i}%"
-    #     update_task(task_ID, task)
+    # FIXME check that run was successful and build base64 strings for output images
 
     task["status"] = "success"
     task["attributes"]["progress"] = "100%"

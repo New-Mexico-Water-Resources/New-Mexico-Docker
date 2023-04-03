@@ -18,6 +18,7 @@ Home
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
     var status = ""
+    var status_interval_ID = ""
 
     function process_status(data) {
         status = data.status
@@ -39,11 +40,21 @@ Home
             var output_node = document.createTextNode(output)
             output_p.appendChild(output_node)
             status_area.appendChild(output_p)
+            clearInterval(status_interval_ID)
+        } else if (status === "failed") {
+            var error = data.attributes.error
+            var error_p = document.createElement("p")
+            var error_node = document.createTextNode(error)
+            error_p.appendChild(error_node)
+            status_area.appendChild(error_p)
+            clearInterval(status_interval_ID)
         }
     }
 
     function fetch_status() {
         if (status === "success") {
+            return;
+        } else if (status === "failed") {
             return;
         }
 
@@ -80,7 +91,7 @@ Home
     });
 
     $(function(){
-        window.setInterval(function(){
+        status_interval_ID = window.setInterval(function(){
             fetch_status();
         }, 1000)
     })
