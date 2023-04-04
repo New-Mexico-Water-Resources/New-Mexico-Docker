@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 echo "starting VIIRS product generation container"
-# FIXME set cron job for VIIRS product generation
-# FIXME start first run of VIIRS product generation
+watch -n 10800 /drought/process_viirs_tiles.sh
+tail -F anything

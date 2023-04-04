@@ -12,6 +12,8 @@ services:
     command: "gunicorn --workers=2 --bind=0.0.0.0:8000 mysite.wsgi:application"
     networks:
       - new_mexico_water
+    volumes:
+      - /water_rights_output:/water_rights_output
 
   drought:
     build: drought
@@ -20,6 +22,12 @@ services:
     command: "/drought/run_viirs_product.sh"
     networks:
       - new_mexico_water
+    volumes:
+      - /static:/static
+      - /GEOS5FP:/GEOS5FP
+      - /LANCE:/LANCE
+      - /SRTM:/SRTM
+      - /VIIRS_output:/VIIRS_output
 
   cache:
     image: memcached

@@ -20,7 +20,8 @@ def run_water_rights_task(task_ID: str, target_geometry_filename: str, working_d
     logger.info(f"target geometry file for task {task_ID}: {target_geometry_filename}")
     task["attributes"]["progress"] = "calling water rights visualizer tool"
 
-    google_drive_temporary_directory = join(working_directory, "google_drive")
+    google_drive_temporary_directory = "/google_drive"
+    output_directory = "/water_rights_output"
 
     try:
         water_rights_visualizer(
