@@ -13,6 +13,14 @@ services:
     networks:
       - new_mexico_water
 
+  drought:
+    build: drought
+    container_name: drought
+    restart: always
+    command: "/drought/run_viirs_product.sh"
+    networks:
+      - new_mexico_water
+
   cache:
     image: memcached
     ports:
