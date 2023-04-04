@@ -8,6 +8,7 @@ RUN apt-get -y install gcc
 # install fish shell
 RUN apt-add-repository ppa:fish-shell/release-3; apt-get -y install fish; chsh -s /usr/local/bin/fish; mamba init fish
 # install dependencies
+RUN mamba update --all
 RUN mamba install -v -y \ 
     astropy \
     beautifulsoup4 \
@@ -31,14 +32,14 @@ RUN mamba install -v -y \
     pyresample \
     pysolar \
     pystac-client \
-    "python=3.9" \
+    "python=3.10" \
     python-dateutil \
     "rasterio>1.0.0" \
     requests \
     scikit-image \
-    "setuptools<58" \
-    "shapely<2.0.0" \
-    tensorflow \
+    "setuptools!=58" \
+    "shapely!=2.0.0" \
+    "tensorflow!=2.11.0" \
     termcolor \
     untangle \
     urllib3 \
