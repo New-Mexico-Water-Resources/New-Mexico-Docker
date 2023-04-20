@@ -37,3 +37,10 @@ Run with `docker-compose`
 ```
 docker-compose up -d
 ```
+
+## macOS
+
+Use `colima` to run the Docker daemon on macOS, and set it to emulate Intel/AMD architecture:
+```
+colima start -m 8 -a x86_64
+```

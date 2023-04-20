@@ -23,6 +23,7 @@ services:
     networks:
       - new_mexico_water
     volumes:
+      - /new_mexico_VIIRS:/new_mexico_VIIRS
       - /static:/static
       - /GEOS5FP:/GEOS5FP
       - /LANCE:/LANCE
