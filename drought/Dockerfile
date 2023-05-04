@@ -24,6 +24,7 @@ WORKDIR /
 RUN git clone https://github.com/New-Mexico-Water-Resources/ET-Toolbox-Product-Generator.git
 WORKDIR /ET-Toolbox-Product-Generator/ETtoolbox
 ADD spacetrack_credentials.txt /ET-Toolbox-Product-Generator/ETtoolbox
+ADD ERS_credentials.txt /ET-Toolbox-Product-Generator/ETtoolbox
 WORKDIR /ET-Toolbox-Product-Generator
 RUN python setup.py install
 WORKDIR /
