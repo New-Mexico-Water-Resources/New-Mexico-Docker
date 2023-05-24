@@ -31,6 +31,10 @@ Copy `google_drive_key.txt` to the `New-Mexico-Docker/app` directory.
 
 Copy `client_secrets.json` to the `New-Mexico-Docker/app` directory.
 
+Copy `spacetrack_credentials.txt` to the `New-Mexico-Docker/drought` directory.
+
+Copy `ERS_credentials.txt` to the `New-Mexico-Docker/drought` directory.
+
 ## Run
 
 Run with `docker-compose`
