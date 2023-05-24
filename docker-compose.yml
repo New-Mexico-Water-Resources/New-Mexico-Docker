@@ -16,7 +16,9 @@ services:
       - /water_rights_output:/water_rights_output
 
   drought:
-    build: drought
+    build:
+      context: drought
+      target: toolbox
     container_name: drought
     restart: always
     command: "/drought/run_viirs_product.sh"
