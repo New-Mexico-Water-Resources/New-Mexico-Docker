@@ -109,3 +109,5 @@ ENV/
 # google drive key
 app/google_drive_key.txt
 app/client_secrets.json
+drought/ERS_credentials.txt
+drought/spacetrack_credentials.txt
