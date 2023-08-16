@@ -16,6 +16,20 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
+## MacOS 
+
+Install [Homebrew](https://brew.sh/). 
+
+Install colima. 
+```
+brew install colima
+```
+
+Start the colima virtual machine.
+```
+colima start -m 8 -a x86_64
+```
+
 ## Repository
 
 Clone the repository on the EC2 instance.
