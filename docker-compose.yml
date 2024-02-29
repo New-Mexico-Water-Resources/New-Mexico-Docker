@@ -1,19 +1,13 @@
 version: "3.7"
 
 services:
-  app:
-    build: app
-    container_name: django-gunicorn
+  water_rights_visualizer:
+    build: water_rights_visualizer
+    container_name: water-rights-visualizer
     restart: always
-    env_file:
-      - django.env
     ports:
-      - "8000:8000"
-    command: "gunicorn --workers=2 --bind=0.0.0.0:8000 mysite.wsgi:application"
-    networks:
-      - new_mexico_water
-    volumes:
-      - /water_rights_output:/water_rights_output
+      - "80:8000"
+    command: "npm run S3"
 
   drought:
     build:
@@ -31,28 +25,6 @@ services:
       - /LANCE:/LANCE
       - /SRTM:/SRTM
       - /VIIRS_output:/VIIRS_output
-
-  cache:
-    image: memcached
-    ports:
-      - "11211:11211"
-    entrypoint:
-      - memcached
-      - -m 64
-    networks:
-      - new_mexico_water
-
-  nginx:
-    image: nginx:1.17
-    container_name: ngx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-    depends_on:
-      - app
-    networks:
-      - new_mexico_water
 
 networks:
   new_mexico_water:

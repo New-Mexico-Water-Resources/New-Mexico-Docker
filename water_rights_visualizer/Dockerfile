@@ -13,11 +13,14 @@ RUN apt-add-repository ppa:fish-shell/release-3; apt-get -y install fish; chsh -
 
 FROM base as environment
 
-# install Google Drive
-RUN add-apt-repository ppa:alessandro-strada/ppa; apt-get update; apt-get install -y google-drive-ocamlfuse
+# install javascript
+RUN apt-get -y install nodejs npm
 
-# install mamba dependencies
-RUN pip install area django django-crispy-forms django-pymemcache geojson geopandas gunicorn h5py pydrive2 pytz rasterio scipy seaborn termcolor tk
+# install dependencies
+RUN mamba install -y -c conda-forge "python=3.10"
+RUN mamba install -y -c conda-forge gdal pygeos pygrib pyresample
+RUN mamba install -y cython
+RUN pip install area geojson geopandas h5py pydrive2 rasterio seaborn termcolor tk
 
 FROM environment as backend
 

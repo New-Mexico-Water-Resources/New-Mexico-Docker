@@ -107,8 +107,8 @@ ENV/
 .mypy_cache/
 
 # google drive key
-app/google_drive_key.txt
-app/client_secrets.json
+water_rights_visualizer/google_drive_key.txt
+water_rights_visualizer/client_secrets.json
 drought/ERS_credentials.txt
 drought/spacetrack_credentials.txt
 
