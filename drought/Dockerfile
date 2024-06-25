@@ -21,7 +21,7 @@ RUN pip install astropy beautifulsoup4 cmake python-dateutil descartes ephem geo
 FROM mamba as toolbox
 
 WORKDIR /
-RUN git clone https://github.com/New-Mexico-Water-Resources/ET-Toolbox-Product-Generator.git
+RUN git clone https://github.com/ET-Toolbox/ET-Toolbox-Product-Generator.git
 WORKDIR /ET-Toolbox-Product-Generator/ETtoolbox
 ADD spacetrack_credentials.txt /ET-Toolbox-Product-Generator/spacetrack_credentials
 ADD ERS_credentials.txt /ET-Toolbox-Product-Generator/ERS_credentials
